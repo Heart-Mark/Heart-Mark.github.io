@@ -7,6 +7,10 @@ page.reward = 'reward' in page ? (theme.reward && page.reward) : theme.reward;
 page.slug = 'hexo-page-' + page.path.replace(/\/index\.html$/,'').split('/').join('-');
 %>
 <div class="container body-wrap">
+ <!-- 判断文章内容，独立about标签内容，不添加评论信息 -->
+
+    <% if(page.content){ %>
+
     <article class="page-article fade" itemprop="blogPage">
         <div class="post-content page-content" id="page-content" itemprop="pageContent">
             <%- page.content.replace(/<p>}<\/p>/g, '</div>')
@@ -15,7 +19,17 @@ page.slug = 'hexo-page-' + page.path.replace(/\/index\.html$/,'').split('/').joi
             }) %>
         </div>
 
-        <% if(theme.about){ %>
+        <%- partial('_partial/post/reward-btn') %>
+
+        <%- partial('_partial/post/comment', { post: page }) %>
+
+    </article>
+
+    <% } %>
+
+    <% if(theme.about){ %>
+
+    <article class="page-article fade" itemprop="blogPage">
         <div class="card page-about-me flex-row">
             <a href="/" class="avatar waves-effect waves-circle waves-light"><%- image_tag(theme.avatar) %></a>
             <div class="content flex-col">
@@ -27,11 +41,9 @@ page.slug = 'hexo-page-' + page.path.replace(/\/index\.html$/,'').split('/').joi
             <%- partial('_partial/post/share-fab') %>
 
         </div>
-        <% } %>
-
-        <%- partial('_partial/post/reward-btn') %>
-
-        <%- partial('_partial/post/comment', { post: page }) %>
     </article>
+
+    <% } %>
+
     <%- partial('_partial/post/reward') %>
 </div>
